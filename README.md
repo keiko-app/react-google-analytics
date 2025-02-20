@@ -62,53 +62,18 @@ Some parameters can be provided (none of them are required):
 
 | Option             | Type                                                                     | Description                 | Default Value                    |
 | ------------------ | ------------------------------------------------------------------------ | --------------------------- | -------------------------------- |
-| `documentTitle`    | String                                                                   | Sets the page title         | Value of `window.document.title` |
-| `href`             | String / [Location](https://developer.mozilla.org/docs/Web/API/Location) | Sets the page URL           | Value of `window.location.href`  |
-| `customDimensions` | Boolean / Array of Custom Dimensions                                     | Sets some custom dimensions | _none_                           |
+| `page_title`    | String                                                                   | Sets the page title         | Value of `window.document.title` |
+| `page_location`             | String / [Location](https://developer.mozilla.org/docs/Web/API/Location) | Sets the page URL           | Value of `window.location.href`  |
+| `client_id` | String                                     | The client ID | _none_                           |
+| `language` | String                                     | The client language. Please see [here](https://en.wikipedia.org/wiki/Language_localisation#Language_tags_and_codes) for all available codes | _none_                           |
+| `page_encoding` | String                                     | The encoding used on the page (e.g. UTF-8) | _none_                           |
+| `user_agent` | String                                     | The client's user agent | _none_                           |
+
+These parameters are based on the [official list](https://developers.google.com/tag-platform/gtagjs/reference/events?hl=fr#page_view) supported by Google Analytics.
 
 ### Tracking Custom Events
 
-**Method:** `tracker.trackEvent(parameters: TrackEventParams)`
-
-With the following parameters:
-
-| Option             | Type                                                                     | Required? | Description                 | Default Value                    |
-| ------------------ | ------------------------------------------------------------------------ | --------- | --------------------------- | -------------------------------- |
-| `category`         | String                                                                   | ✅        | The event's category        | _none, must be set_              |
-| `action`           | String                                                                   | ✅        | The event's action          | _none, must be set_              |
-| `name`             | String                                                                   | -         | ...                         | _none_                           |
-| `value`            | String                                                                   | -         | ...                         | _none_                           |
-| `documentTitle`    | String                                                                   | -         | Sets the page title         | Value of `window.document.title` |
-| `href`             | String / [Location](https://developer.mozilla.org/docs/Web/API/Location) | -         | Sets the page URL           | Value of `window.location.href`  |
-| `customDimensions` | Boolean / Array of Custom Dimensions                                     | -         | Sets some custom dimensions | _none_                           |
-
-### Tracking Searches
-
-**Method:** `tracker.trackSiteSearch(parameters: TrackSiteSearchParams)`
-
-With the following parameters:
-
-| Option             | Type                                                                     | Required? | Description                                                                                  | Default Value                    |
-| ------------------ | ------------------------------------------------------------------------ | --------- | -------------------------------------------------------------------------------------------- | -------------------------------- |
-| `keyword`          | String                                                                   | ✅        | The searched keyword                                                                         | _none, must be set_              |
-| `category`         | String or `false`                                                        | -         | The category used by the search engine. If not applicable (or unknown), set to `false`       | `false`                          |
-| `count`            | Number or `false`                                                        | -         | The number of results returned by the search. If not applicable (or unknown), set to `false` | `false`                          |
-| `documentTitle`    | String                                                                   | -         | Sets the page title                                                                          | Value of `window.document.title` |
-| `href`             | String / [Location](https://developer.mozilla.org/docs/Web/API/Location) | -         | Sets the page URL                                                                            | Value of `window.location.href`  |
-| `customDimensions` | Boolean / Array of Custom Dimensions                                     | -         | Sets some custom dimensions                                                                  | _none_                           |
-
-### Other Specifications
-
-#### Custom Dimensions
-
-When tracking a Page View or an Event, you can specify any kind of Custom Dimension. A Custom Dimension is an `Object` with a numeric `id` and a string `value`:
-
-```typescript
-interface CustomDimension {
-  id: number;
-  value: string;
-}
-```
+**Method:** `tracker.trackEvent(name: string, parameters: Record<string,any>)`
 
 ## 🔧 Options
 
