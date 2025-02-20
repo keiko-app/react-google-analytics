@@ -25,4 +25,16 @@ export type AnalyticsProviderConfig = {
    * @default false
    */
   disableLinkTracking?: boolean;
+
+  /**
+   * Optional flag to enable verbose logging. This adds more detailed logs to the browser console.
+   * @default false
+   */
+  verbose?: boolean;
+
+  /**
+   * Optional flag to enable debug mode. This will log all events to the browser console.
+   * @default false
+   */
+  debug?: boolean;
 };

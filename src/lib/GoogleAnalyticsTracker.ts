@@ -3,6 +3,7 @@ import { AnalyticsProviderConfig, TrackPageViewParams } from "../types";
 declare global {
   interface Window {
     dataLayer: any[];
+    gtag: (...args: any) => void;
   }
 }
 
@@ -18,6 +19,7 @@ export class GoogleAnalyticsTracker {
 
     this.config = config;
 
+    this.log("Initializing Google Analytics tracker...");
     this.launch();
   }
 
@@ -30,7 +32,10 @@ export class GoogleAnalyticsTracker {
    */
   addCustomInstruction(name: string, ...args: any[]): this {
     if (typeof window !== "undefined") {
-      window.dataLayer.push([name, ...args]);
+      this.log(`Adding custom instruction: ${name}, with args: ${args}`);
+      window.gtag(name, ...args);
+    } else {
+      this.log(`\`window\` is undefined. Skipping instruction.`);
     }
     return this;
   }
@@ -46,11 +51,24 @@ export class GoogleAnalyticsTracker {
     const url = page_location || this.getPageUrl();
     const title = page_title || this.getPageTitle();
 
-    return this.addCustomInstruction("event", "page_view", {
+    this.log(
+      `Tracking page view for URL: ${url}, with title: ${title} and additional params: ${params}`
+    );
+
+    this.addCustomInstruction("config", this.config.measurementId, {
+      send_page_view: false,
+      page_referrer: document.referrer,
+      page_location: url,
+      debug_mode: !!this.config.debug,
+      update: true,
+    });
+    this.addCustomInstruction("event", "page_view", {
       ...params,
       page_location: url,
       page_title: title,
     });
+
+    return this;
   }
 
   /**
@@ -60,6 +78,7 @@ export class GoogleAnalyticsTracker {
    * @memberof GoogleAnalyticsTracker
    */
   trackLogin(method: string): this {
+    this.log(`Tracking login event with method: ${method}`);
     return this.addCustomInstruction("event", "login", {
       method,
     });
@@ -73,6 +92,7 @@ export class GoogleAnalyticsTracker {
    * @memberof GoogleAnalyticsTracker
    */
   trackEvent(name: string, params: Record<string, any>): this {
+    this.log(`Tracking generic event with name: ${name} and params: ${params}`);
     return this.addCustomInstruction("event", name, params);
   }
 
@@ -83,6 +103,8 @@ export class GoogleAnalyticsTracker {
    * @memberof GoogleAnalyticsTracker
    */
   private launch() {
+    this.addGoogleTrackerToDOM();
+
     if (typeof window === "undefined") {
       console.warn(
         "Google Analytics will not work in non-browser environments."
@@ -91,19 +113,31 @@ export class GoogleAnalyticsTracker {
     }
 
     window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag() {
+      window.dataLayer.push(arguments);
+    };
 
     if (window.dataLayer.length !== 0) {
+      this.log("The dataLayer array already exists. Skipping initialization.");
       return;
     }
 
     if (this.config.disableTracking) {
+      this.log("Tracking is disabled. Skipping initialization.");
       return;
     }
 
-    this.addCustomInstruction("js", new Date());
-    this.addCustomInstruction("config", this.config.measurementId);
-
-    this.addGoogleTrackerToDOM();
+    const now = new Date();
+    this.log(
+      `Launching Google Analytics tracker at ${now.toISOString()} with measurement ID: ${
+        this.config.measurementId
+      }`
+    );
+    this.addCustomInstruction("js", now);
+    this.addCustomInstruction("config", this.config.measurementId, {
+      send_page_view: false,
+      debug_mode: !!this.config.debug,
+    });
   }
 
   /**
@@ -122,6 +156,12 @@ export class GoogleAnalyticsTracker {
     scriptElement.defer = true;
     scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${this.config.measurementId}`;
 
+    this.log("Adding Google Analytics tracker to the DOM...");
+    this.log(`Script URL: ${scriptElement.src}`);
+    this.log(
+      `Found scripts parentNode? ${!!scripts?.parentNode ? "Yes" : "No"}`
+    );
+
     scripts?.parentNode?.insertBefore(scriptElement, scripts);
   }
 
@@ -133,7 +173,9 @@ export class GoogleAnalyticsTracker {
    * @memberof GoogleAnalyticsTracker
    */
   private getPageUrl(): string {
+    this.log("Automatically getting the page URL...");
     if (this.config.urlTransformer) {
+      this.log("Using the URL transformer function.");
       return this.config.urlTransformer(window.location.href);
     }
 
@@ -147,6 +189,20 @@ export class GoogleAnalyticsTracker {
    * @memberof GoogleAnalyticsTracker
    */
   private getPageTitle(): string {
+    this.log("Automatically getting the page title...");
     return window.document.title;
+  }
+
+  /**
+   * Logs a message to the console.
+   * @param {string} message - The message to log.
+   * @returns {void}
+   * @private
+   * @memberof GoogleAnalyticsTracker
+   */
+  private log(message: string): void {
+    if (!!this.config.verbose) {
+      console.log(`[Keiko-Analytics-Tracker] ${message}`);
+    }
   }
 }
