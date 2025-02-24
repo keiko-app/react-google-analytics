@@ -1,7 +1,10 @@
 <h1 align="center" id="title">@keiko-app/react-google-analytics</h1>
 
-<p align="center"><img src="https://socialify.git.ci/keiko-app/react-google-analytics/image?description=1&amp;font=Source%20Code%20Pro&amp;forks=1&amp;issues=1&amp;language=1&amp;name=1&amp;owner=1&amp;pulls=1&amp;stargazers=1&amp;theme=Auto" alt="project-image" with="75%"></p>
+<p align="center"><img src="https://socialify.git.ci/keiko-app/react-google-analytics/image?description=1&amp;font=Source%20Code%20Pro&amp;forks=1&amp;issues=1&amp;language=1&amp;name=1&amp;owner=1&amp;pulls=1&amp;stargazers=1&amp;theme=Auto" alt="project-image" width="75%"></p>
 
+<p align="center">
+<a href="https://sonarcloud.io/summary/new_code?id=keiko-app_react-google-analytics" target="_blank" rel="nofollow"><img src="https://sonarcloud.io/api/project_badges/quality_gate?project=keiko-app_react-google-analytics" alt="sonar analysis"></a>
+</p>
 ## 🧐 Features
 
 Here're some of the project's best features:
@@ -60,14 +63,14 @@ Then, you will have access to the tracking methods.
 
 Some parameters can be provided (none of them are required):
 
-| Option             | Type                                                                     | Description                 | Default Value                    |
-| ------------------ | ------------------------------------------------------------------------ | --------------------------- | -------------------------------- |
-| `page_title`    | String                                                                   | Sets the page title         | Value of `window.document.title` |
-| `page_location`             | String / [Location](https://developer.mozilla.org/docs/Web/API/Location) | Sets the page URL           | Value of `window.location.href`  |
-| `client_id` | String                                     | The client ID | _none_                           |
-| `language` | String                                     | The client language. Please see [here](https://en.wikipedia.org/wiki/Language_localisation#Language_tags_and_codes) for all available codes | _none_                           |
-| `page_encoding` | String                                     | The encoding used on the page (e.g. UTF-8) | _none_                           |
-| `user_agent` | String                                     | The client's user agent | _none_                           |
+| Option          | Type                                                                     | Description                                                                                                                                 | Default Value                    |
+| --------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `page_title`    | String                                                                   | Sets the page title                                                                                                                         | Value of `window.document.title` |
+| `page_location` | String / [Location](https://developer.mozilla.org/docs/Web/API/Location) | Sets the page URL                                                                                                                           | Value of `window.location.href`  |
+| `client_id`     | String                                                                   | The client ID                                                                                                                               | _none_                           |
+| `language`      | String                                                                   | The client language. Please see [here](https://en.wikipedia.org/wiki/Language_localisation#Language_tags_and_codes) for all available codes | _none_                           |
+| `page_encoding` | String                                                                   | The encoding used on the page (e.g. UTF-8)                                                                                                  | _none_                           |
+| `user_agent`    | String                                                                   | The client's user agent                                                                                                                     | _none_                           |
 
 These parameters are based on the [official list](https://developers.google.com/tag-platform/gtagjs/reference/events?hl=fr#page_view) supported by Google Analytics.
 
