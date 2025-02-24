@@ -5,6 +5,7 @@
 <p align="center">
 <a href="https://sonarcloud.io/summary/new_code?id=keiko-app_react-google-analytics" target="_blank" rel="nofollow"><img src="https://sonarcloud.io/api/project_badges/quality_gate?project=keiko-app_react-google-analytics" alt="sonar analysis"></a>
 </p>
+
 ## 🧐 Features
 
 Here're some of the project's best features:
